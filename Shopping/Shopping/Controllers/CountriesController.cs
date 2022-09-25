@@ -8,6 +8,10 @@ using Microsoft.EntityFrameworkCore;
 using Shopping.Data;
 using Shopping.Data.Entities;
 
+
+
+
+
 namespace Shopping.Controllers
 {
     public class CountriesController : Controller
@@ -20,12 +24,51 @@ namespace Shopping.Controllers
         }
 
         // GET: Countries
-        public async Task<IActionResult> Index()
+
+        public async Task<IActionResult> Index(
+            string sortOrder,
+            string currentFilter,
+            string searchString,
+            int? pageNumber
+            )
         {
-              return _context.Countries != null ? 
-                          View(await _context.Countries.ToListAsync()) :
-                          Problem("Entity set 'DataContext.Countries'  is null.");
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "Name_desc" : "";
+            
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+
+            var countries = from c in _context.Countries
+                            select c;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                countries = countries.Where(s => s.Name.Contains(searchString));       
+
+            }
+
+            switch (sortOrder)
+            {
+                case "Name_desc":
+                    countries = countries.OrderByDescending(c => c.Name);
+                    break;
+                default:
+                    countries = countries.OrderBy(c => c.Name);
+                    break;
+            }
+            int pageSize = 3;
+            return View(await PaginatedList<Country>.CreateAsync(countries.AsNoTracking(), pageNumber ?? 1, pageSize));
+
+
         }
+
 
         // GET: Countries/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -150,14 +193,17 @@ namespace Shopping.Controllers
             {
                 _context.Countries.Remove(country);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CountryExists(int id)
         {
-          return (_context.Countries?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Countries?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
+
+
+

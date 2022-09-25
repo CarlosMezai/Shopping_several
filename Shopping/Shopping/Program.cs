@@ -3,7 +3,6 @@ using Shopping.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 //Crear un servicio datacontext, con una  expresion lambda inciada por "o" para especificar que es de opcion, se pone lo que se considera que representa
@@ -27,7 +26,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
-
+ 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
