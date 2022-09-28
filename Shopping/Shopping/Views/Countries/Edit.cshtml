@@ -14,11 +14,8 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*El hidden permite qe no se altere un campo que no quiero modificar*@
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
+            
+            <partial name="_country"/>
             
             <div class="form-group mt-2">
                 <input type="submit" value="Save" class="btn btn-outline-primary" />

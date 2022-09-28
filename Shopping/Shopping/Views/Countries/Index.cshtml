@@ -15,23 +15,23 @@
     <a asp-action="Create" class="btn btn-outline-primary">Crear nuevo país</a>
 </p>
 
-@*<form asp-action="Index" method="get">
+<form asp-action="Index" method="get">
     <div class = "form-actions no-color">
         <p>
-            Find by country: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]"/>
-            <input type="submit" value="Search" class="btn btn-default" />
-            <a asp-action="Index">Back to Full List </a>
+            Buscar un país: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]"/>
+            <input type="submit" value="Buscar" />
+            <a asp-action="Index">Mostrar lista completa </a>
         </p>
     </div>
-</form>*@
+</form>
 
-@using (Html.BeginForm("Index", "Country", FormMethod.Get))
+@*@using (Html.BeginForm("Index", "Country", FormMethod.Get))
 {
-    <p>
-        Encontrar un país: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
-        <input type="submit" value="Buscar" />
-    </p>
-}
+            <p>
+                Encontrar un país: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+                <input type="submit" value="Buscar" />
+            </p>
+}*@
 
 <div class="row">
     <div class=col-md-12>
@@ -56,16 +56,16 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr>
-                                <td>
+                                    <tr>
+                                        <td>
                                     @Html.DisplayFor(modelItem => item.Name)
-                                </td>
-                                <td>
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Editar</a> |
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Detalles</a> |
-                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Borrar</a>
-                                </td>
-                            </tr>
+                                        </td>
+                                        <td>
+                                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning">Editar</a> |
+                                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Detalles</a> |
+                                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Borrar</a>
+                                        </td>
+                                    </tr>
                         }
                     </tbody>
                 </table>
