@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Page\**" />
-    <Content Remove="Page\**" />
-    <EmbeddedResource Remove="Page\**" />
-    <None Remove="Page\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Views\Categories\Details.cshtml~RFa3d06aa.TMP" />
   </ItemGroup>
 
@@ -26,6 +19,10 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.9" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Page\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
