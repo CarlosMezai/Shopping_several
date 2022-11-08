@@ -13,9 +13,12 @@ namespace Shopping.Data
 
         }
 
-    //Por cada entidad que se mapee se debe crear una porp de tipo dbset para mapear, aca se pluraliza en ingles
+        //Por cada entidad que se mapee se debe crear una porp de tipo dbset para mapear, aca se pluraliza en ingles
+
+        public DbSet<Category> Categories { get; set; }
         public DbSet<Country>Countries { get; set; }
-        public DbSet<Category>Categories{ get; set; }
+        public DbSet<State> States { get; set; }
+        public DbSet<City> Cities { get; set; }
 
 
         //Crear una entidad
@@ -24,6 +27,8 @@ namespace Shopping.Data
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Country>().HasIndex(c => c.Name).IsUnique();    
             modelBuilder.Entity<Category>().HasIndex(c =>c.Name).IsUnique();    
+            modelBuilder.Entity<State>().HasIndex("Name", "CountryId").IsUnique();    
+            modelBuilder.Entity<City>().HasIndex("Name", "StateId").IsUnique();    
         }
 
     }
