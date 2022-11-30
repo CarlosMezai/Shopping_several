@@ -77,6 +77,7 @@ namespace Shopping.Controllers
             }
 
             var country = await _context.Countries
+                //incluye los estados por country
                 .Include(c => c.States)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (country == null)
@@ -90,7 +91,8 @@ namespace Shopping.Controllers
         
         public IActionResult Create()
         {
-            return View();
+            Country country = new() { States = new List<State>() };
+            return View(country);
         }
 
   
@@ -244,6 +246,79 @@ namespace Shopping.Controllers
 
             }
             return View(country);
+        }
+
+
+        //EDIT STATE
+        public async Task<IActionResult> EditState(int? id)
+        {
+            if (id == null || _context.States == null)
+            {
+                return NotFound();
+            }
+
+            var state = await _context.States
+                .Include(s => s.Country)
+                .FirstOrDefaultAsync(s => s.Id == id);
+            if (state == null)
+            {
+                return NotFound();
+            }
+
+            StateViewModel model = new()
+            {
+                CountryId = state.Country.Id,
+                Id = state.Id,
+                Name = state.Name,
+
+            };
+            return View(model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditState(int id, StateViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    State state = new()
+                    {
+                        Id = model.Id,
+                        Name = model.Name,
+                    };
+
+                    _context.Update(state);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details), new {Id = model.CountryId});
+                }
+
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(String.Empty, "Ya existe un Departamento/Estado con el mismo nombre en este país");
+                    }
+
+                    else
+                    {
+                        ModelState.AddModelError(String.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(String.Empty, exception.Message);
+                }
+
+            }
+            return View();
         }
 
         // GET: Countries/Delete/5

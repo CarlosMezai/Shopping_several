@@ -26,8 +26,10 @@ namespace Shopping.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Country>().HasIndex(c => c.Name).IsUnique();    
-            modelBuilder.Entity<Category>().HasIndex(c =>c.Name).IsUnique();    
-            modelBuilder.Entity<State>().HasIndex("Name", "CountryId").IsUnique();    
+            modelBuilder.Entity<Category>().HasIndex(c =>c.Name).IsUnique();   
+            //Idice compuesto para que permita un solo estado por país
+            modelBuilder.Entity<State>().HasIndex("Name", "CountryId").IsUnique();
+            //Idice compuesto para que permita un sola ciudad con mismo nombre por estado
             modelBuilder.Entity<City>().HasIndex("Name", "StateId").IsUnique();    
         }
 

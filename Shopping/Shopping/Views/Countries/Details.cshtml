@@ -14,3 +14,61 @@
     <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-outline-warning">Editar País</a> 
     <a asp-action="Index" class="btn btn-outline-success">Regresar</a>
 </div>
+
+<hr/>
+
+@*MOSTRAR UNA LISTA DE DEPARTAMENTOS/ESTADOS*@
+
+<form asp-action="Index" method="get">
+    <div class = "form-actions no-color">
+        <p>
+            Buscar un Departamento/Estado: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]"/>
+            <input type="submit" value="Buscar" />
+            <a asp-action="Index">Mostrar lista completa </a>
+        </p>
+    </div>
+</form>
+
+<div class="row">
+    <div class=col-md-12>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 classs="panel-title">Departamentos/Estados</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table table-hover table-responsive table-striped" id="My Table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <a asp-action = "Index" asp-route-sortOrder="@ViewData["NameSortParm"]" asp-route-currentFilter="@ViewData["currentFilter"]"> Nombre</a>                                
+                            @*@Html.DisplayNameFor(model => model.Name)*@
+                            </th>
+                            <th>
+                                Cantidad Ciudades
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var item in Model.States)
+                    {
+                                        <tr>
+                                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                                <td>
+                                @Html.DisplayFor(modelItem => item.CitiesNumber)
+                                                </td>
+                                            <td>
+                                                <a asp-action="EditState" asp-route-id="@item.Id" class="btn btn-outline-warning">Editar</a> |
+                                                <a asp-action="DetailsState" asp-route-id="@item.Id" class="btn btn-outline-info">Detalles</a> |
+                                                <a asp-action="DeleteState" asp-route-id="@item.Id" class="btn btn-outline-danger">Borrar</a>
+                                            </td>
+                                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
